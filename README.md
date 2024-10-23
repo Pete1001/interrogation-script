@@ -63,7 +63,6 @@ Example:
 ```
 FUTURE DEVELOPMENT:  (Notes for Pete)
    -Write some decent output to the CONSOLE!!!
-   -Each run of the scripts - overwrite all the output logs
    -Add functionality for Mandatory General System Health Check
    -Add functionality for Manual Diff Pre/Post Checks
       -Run Pre and Post and write each to a separate file for each host

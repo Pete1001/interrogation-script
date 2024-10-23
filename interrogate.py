@@ -58,7 +58,7 @@ def setup_logger(host):
     logger.setLevel(logging.INFO)
     
     # Create a file handler for the specific host
-    handler = logging.FileHandler(f"{host}_session.log")
+    handler = logging.FileHandler(f"{host}_session.log") #if desired; mode = 'w' overwrites the log file each time the script is run for each host
     handler.setLevel(logging.INFO)
     
     # Create a formatter and add it to the handler
