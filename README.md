@@ -1,7 +1,6 @@
+# Network Devices Interrogation Collector
 
-# Network Switch Output Collector
-
-This Python script automates gathering command outputs from network switches by connecting via SSH. It reads hosts (switch IPs or hostnames) and commands from external files (`hosts.txt`, `base_commands.txt`, and `commands.txt`), and outputs the results for each host into a separate file. The script also logs the entire session interactively for review, with improvements to logging such that each host has its own session log file.
+This Python script automates gathering command outputs from network devices by connecting via SSH. It reads hosts (devices IPs or hostnames) and commands from external files (`hosts.txt`, `base_commands.txt`, and `commands.txt`), and outputs the results for each host into a separate file. The script also logs the entire session interactively for each host.
 
 ## Table of Contents
 1. [Features](#features)
@@ -17,10 +16,10 @@ This Python script automates gathering command outputs from network switches by 
 9. [License](#license)
 
 ## Features
-- **Automated SSH connection**: Establishes secure connections to multiple network switches using SSH.
-- **Command execution**: Executes multiple commands on each switch as specified in the input file.
+- **Automated SSH connection**: Establishes secure connections to multiple network devices using SSH.
+- **Command execution**: Executes multiple commands on each device as specified in the input file.
 - **Base commands execution**: Executes a predefined set of base commands (from `base_commands.txt`) before any custom commands from `commands.txt`.
-- **Parallel processing**: Executes commands on multiple switches concurrently to save time.
+- **Parallel processing**: Executes commands on multiple devices concurrently to save time.
 - **Output separation**: Clear separation between outputs for each host using `=` signs, and between commands using `-` signs.
 - **Session logging per host**: Logs for each host are saved in separate log files for easier management.
 
@@ -39,12 +38,12 @@ pip install paramiko
 
 1. **Clone the repository** (or copy the script to your machine):
    ```bash
-   git clone https://github.com/your-repo/network-switch-output-collector.git
+   git clone https://github.com/Pete1001/interrogation-script.git
    ```
 
 2. **Navigate to the directory**:
    ```bash
-   cd network-switch-output-collector
+   cd interrogation-script
    ```
 
 3. **Ensure `hosts.txt`, `base_commands.txt`, and `commands.txt` files are present** in the same directory (See below for the required format).
@@ -54,7 +53,7 @@ pip install paramiko
 ### Input Files
 
 #### `hosts.txt`
-The `hosts.txt` file should contain a list of network switch IP addresses or hostnames. Each line should contain one host, with no commas or additional characters.
+The `hosts.txt` file should contain a list of network device IP addresses or hostnames. Each line should contain one host, with no commas or additional characters.
 
 Example:
 ```
@@ -62,9 +61,14 @@ Example:
 192.168.0.2
 10.0.0.5
 ```
+FUTURE DEVELOPMENT:  (Notes for Pete)
+   -Add functionality for Mandatory General System Health Check
+   -Add functionality for Manual Diff Pre/Post Checks
+      -Run Pre and Post and write each to a separate file for each host
+      -Do a diff between these files and write the output of the diff
 
 #### `base_commands.txt`
-The `base_commands.txt` file should contain a list of base commands that will be executed **first** on every switch. These are usually commands that set terminal behavior or gather specific information common to all switches.
+The `base_commands.txt` file should contain a list of base commands that will be executed **first** on every device. These are usually commands that set terminal behavior or gather specific information common to all devices.
 
 Example:
 ```
@@ -74,7 +78,7 @@ show clock
 ```
 
 #### `commands.txt`
-The `commands.txt` file should contain a list of commands that you want to execute after the base commands. Each line should be a command as you would type it on the switch's command line.
+The `commands.txt` file should contain a list of commands that you want to execute after the base commands. Each line should be a command as you would type it on the device's command line.
 
 Example:
 ```
@@ -89,20 +93,20 @@ show ip route
 
    Example:
    ```bash
-   python3 network_switch_collector.py
+   python3 interrogation.py
    ```
 
 2. The script will:
    - Read from `hosts.txt`, `base_commands.txt`, and `commands.txt`.
    - Combine the base commands from `base_commands.txt` with the custom commands from `commands.txt` (base commands will be executed first).
-   - Connect to each host (network switch) via SSH.
+   - Connect to each host (network device) via SSH.
    - Execute the combined list of commands on each host.
    - Save the output in individual files named `{host}_output.txt`.
 
 ### Example Interaction
 
 ```bash
-$ python3 network_switch_collector.py
+$ python3 interrogation.py
 Please enter your username: admin
 Password: **********
 ```
@@ -164,12 +168,12 @@ This ensures that commands are executed on up to 5 hosts at the same time.
 
 - **Connection Errors**:
   If you encounter connection issues, check the following:
-  - Ensure that the network switches are reachable (e.g., via `ping`).
-  - Verify that the SSH service is enabled on the switches.
+  - Ensure that the network devices are reachable (e.g., via `ping`).
+  - Verify that the SSH service is enabled on the devices.
   - Double-check the credentials being entered.
   
 - **Command Errors**:
-  If specific commands fail, it may be due to the privilege level or syntax issues. Ensure that the user has sufficient privileges to execute the commands on the switch.
+  If specific commands fail, it may be due to the privilege level or syntax issues. Ensure that the user has sufficient privileges to execute the commands on the device.
 
 - **Logging**:
   Review the individual `{host}_session.log` files for detailed error messages or connection issues.

@@ -3,7 +3,7 @@
 #
 # Author:      Pete Link
 # Date:        October 2024
-# Description: Script to gather command outputs from network switches using SSH.
+# Description: Script to gather command outputs from network devices using SSH.
 
 ## Contact
 For questions or suggestions, feel free to open an issue or contact me via [GitHub](https://github.com/Pete1001).
@@ -26,7 +26,6 @@ hosts.txt must be named "hosts.txt".  The file must be located in the current di
 commands.txt must be named "commands.txt".  The file must be located in the current directory and must be formatted in the following way:
     -one command per line with no commas, quotes or spaces
     -simply type it exactly as you would at the command line
-    -please note that by default, the script inserts 'term len 0','show run | i hostsname','show ver', and 'show clock' as the first commands
     
     commands.txt example:
     
@@ -34,6 +33,18 @@ commands.txt must be named "commands.txt".  The file must be located in the curr
         sho ip int bri | i up
         sh cdp nei
         sh run
+
+base_commands.txt can contain commands that can be executed first on any device.  These commands are simply helper commands.
+The file must be located in the current directory and must be formatted in the following way:
+    -one command per line with no commas, quotes or spaces
+    -simply type it exactly as you would at the command line
+
+    base_commands.txt example:
+
+        term len 0
+        show run | i hostname
+        show clock
+
 '''
 import paramiko
 from getpass import getpass
@@ -96,14 +107,14 @@ def connect_and_execute_persistent(host, username, password, commands, logger):
         logger.info(f"{'='*40} Starting session for host: {host} {'='*40}")
         
         shell = ssh.invoke_shell()
-        time.sleep(1)  # Allow some time to establish the session
+        time.sleep(3)  # Allow some time to establish the session
         
         output = ""
         for command in commands:
             logger.info(f"{'-'*40} Executing command: {command} {'-'*40}")
             
             shell.send(command + '\n')
-            time.sleep(2)  # Give time for the command to execute
+            time.sleep(5)  # Give time for the command to execute
             
             command_output = ""
             while shell.recv_ready():
