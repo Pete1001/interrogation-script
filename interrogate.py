@@ -184,4 +184,4 @@ if __name__ == "__main__":
     with ThreadPoolExecutor(max_workers=5) as executor:
         executor.map(run_on_host, hosts)
 
-    print("All tasks completed.")
+    print("All tasks completed.  Have a nice day!")
