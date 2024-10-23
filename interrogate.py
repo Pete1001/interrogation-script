@@ -107,7 +107,7 @@ def connect_and_execute_persistent(host, username, password, commands, logger):
         print(f"Connecting to {host}...")
 
         logger.info(f"Connected to {host}")
-        logger.info(f"{'='*40} Starting session for host: {host} {'='*40}")
+        logger.info(f"{'='*10} Starting session for host: {host} {'='*10}")
         
         shell = ssh.invoke_shell()
         time.sleep(3)  # Allow some time to establish the session
@@ -117,7 +117,7 @@ def connect_and_execute_persistent(host, username, password, commands, logger):
             # Print to console when running a command on a host
             print(f"Executing command on {host}: {command}")
             
-            logger.info(f"{'-'*40} Executing command: {command} {'-'*40}")
+            logger.info(f"{'-'*10} Executing command: {command} {'-'*10}")
             shell.send(command + '\n')
             time.sleep(5)  # Give time for the command to execute
             
@@ -130,10 +130,10 @@ def connect_and_execute_persistent(host, username, password, commands, logger):
             logger.debug(f"Command output (truncated): {truncated_output}")
             
             # Add separation for each command in the output file
-            output += f"\n{'-'*40}\nCommand: {command}\n{'-'*40}\n{command_output.strip()}\n"
+            output += f"\n{'-'*10}\nCommand: {command}\n{'-'*10}\n{command_output.strip()}\n"
         
         ssh.close()
-        logger.info(f"{'='*40} Finished session for host: {host} {'='*40}")
+        logger.info(f"{'='*10} Finished session for host: {host} {'='*10}")
         
         # Print to console when done with a host
         print(f"Finished session for {host}")
@@ -157,20 +157,20 @@ def run_on_host(host):
         logger = setup_logger(host)
         
         # Add a header to indicate start of output for this host
-        file.write(f"\n{'='*40}\nOutput for host: {host}\n{'='*40}\n")
-        logger.info(f"Starting session for host: {host}\n{'='*40}")
+        file.write(f"\n{'='*10}\nOutput for host: {host}\n{'='*10}\n")
+        logger.info(f"Starting session for host: {host}\n{'='*10}")
         
         try:
             output = retry(lambda: connect_and_execute_persistent(host, username, password, commands, logger), logger)
             if output:
                 logger.info(f"Commands executed successfully on {host}")
                 file.write(f"{output}\n")
-                file.write(f"\n{'='*40}\nEnd of output for host: {host}\n{'='*40}\n")
+                file.write(f"\n{'='*10}\nEnd of output for host: {host}\n{'='*10}\n")
             else:
-                file.write(f"Failed to execute commands on {host}\n{'='*40}\n")
+                file.write(f"Failed to execute commands on {host}\n{'='*10}\n")
         except Exception as e:
             logger.error(f"Error during session with {host}: {e}")
-            file.write(f"Error during session with {host}: {e}\n{'='*40}\n")
+            file.write(f"Error during session with {host}: {e}\n{'='*10}\n")
 
 if __name__ == "__main__":
     hosts_file = "hosts.txt"
