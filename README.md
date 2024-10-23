@@ -167,5 +167,6 @@ This ensures that commands are executed on up to 5 hosts at the same time.
 We welcome contributions to enhance the script, including new features, bug fixes, and optimizations. If you'd like to contribute, please fork the repository and submit a pull request.
 
 ## License
-
+MIT License
+Copyright (c) 2024 [Pete Link]
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

@@ -1,6 +1,12 @@
 '''
- by   -->> 
- Personal email:  
+# interrogate.py
+#
+# Author:    Pete Link
+# Date: October 2024
+# Description: Script to gather command outputs from network switches using SSH.
+
+## Contact
+For questions or suggestions, feel free to open an issue or contact me via [GitHub](https://github.com/Pete1001).
 
  Use:        python3 `filename`
  Tested on:  enwdcocd01n
