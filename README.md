@@ -188,3 +188,50 @@ We welcome contributions to enhance the script, including new features, bug fixe
 MIT License
 Copyright (c) 2024 [Pete Link]
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+
+## Console Output
+
+When running the script, the user will now see the following messages to give visibility into the ongoing operations:
+
+1. **Connecting to Host**:
+   - A message will be displayed when the script starts connecting to a host:
+     ```
+     Connecting to <host>...
+     ```
+
+2. **Executing Commands**:
+   - For each command executed on the host, the following message is shown:
+     ```
+     Executing command on <host>: <command>
+     ```
+
+3. **Session Completion**:
+   - When the session for a host is completed, the following message is displayed:
+     ```
+     Finished session for <host>
+     ```
+
+4. **Error Handling**:
+   - If a connection to a host fails, an error message is shown:
+     ```
+     Error connecting to <host>
+     ```
+
+### Example Console Output:
+
+```bash
+Connecting to 192.168.0.1...
+Executing command on 192.168.0.1: term len 0
+Executing command on 192.168.0.1: show run | i hostname
+Executing command on 192.168.0.1: show clock
+Executing command on 192.168.0.1: show version
+Finished session for 192.168.0.1
+Connecting to 192.168.0.2...
+Executing command on 192.168.0.2: term len 0
+...
+Finished session for 192.168.0.2
+All tasks completed.
+```
+
+This output keeps the user informed about the script's progress without overwhelming them with excessive details.

@@ -103,6 +103,9 @@ def connect_and_execute_persistent(host, username, password, commands, logger):
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect(host, username=username, password=password, timeout=10)
 
+        # Print to console when connecting to a host
+        print(f"Connecting to {host}...")
+
         logger.info(f"Connected to {host}")
         logger.info(f"{'='*40} Starting session for host: {host} {'='*40}")
         
@@ -111,8 +114,10 @@ def connect_and_execute_persistent(host, username, password, commands, logger):
         
         output = ""
         for command in commands:
-            logger.info(f"{'-'*40} Executing command: {command} {'-'*40}")
+            # Print to console when running a command on a host
+            print(f"Executing command on {host}: {command}")
             
+            logger.info(f"{'-'*40} Executing command: {command} {'-'*40}")
             shell.send(command + '\n')
             time.sleep(5)  # Give time for the command to execute
             
@@ -129,9 +134,13 @@ def connect_and_execute_persistent(host, username, password, commands, logger):
         
         ssh.close()
         logger.info(f"{'='*40} Finished session for host: {host} {'='*40}")
+        
+        # Print to console when done with a host
+        print(f"Finished session for {host}")
         return output.strip()  # Clean output by removing excessive whitespace
     except Exception as e:
         logger.error(f"Error connecting to {host}: {e}")
+        print(f"Error connecting to {host}")
         return None
 
 # Run the process for each host
