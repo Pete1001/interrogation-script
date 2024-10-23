@@ -1,7 +1,7 @@
 
 # Network Switch Output Collector
 
-This Python script automates gathering command outputs from network switches by connecting via SSH. It reads hosts (switch IPs or hostnames) and commands from external files (`hosts.txt` and `commands.txt`), and outputs the results for each host into a separate file. The script also logs the entire session interactively for review, with improvements to logging such that each host has its own session log file.
+This Python script automates gathering command outputs from network switches by connecting via SSH. It reads hosts (switch IPs or hostnames) and commands from external files (`hosts.txt`, `base_commands.txt`, and `commands.txt`), and outputs the results for each host into a separate file. The script also logs the entire session interactively for review, with improvements to logging such that each host has its own session log file.
 
 ## Table of Contents
 1. [Features](#features)
@@ -19,6 +19,7 @@ This Python script automates gathering command outputs from network switches by 
 ## Features
 - **Automated SSH connection**: Establishes secure connections to multiple network switches using SSH.
 - **Command execution**: Executes multiple commands on each switch as specified in the input file.
+- **Base commands execution**: Executes a predefined set of base commands (from `base_commands.txt`) before any custom commands from `commands.txt`.
 - **Parallel processing**: Executes commands on multiple switches concurrently to save time.
 - **Output separation**: Clear separation between outputs for each host using `=` signs, and between commands using `-` signs.
 - **Session logging per host**: Logs for each host are saved in separate log files for easier management.
@@ -46,7 +47,7 @@ pip install paramiko
    cd network-switch-output-collector
    ```
 
-3. **Ensure `hosts.txt` and `commands.txt` files are present** in the same directory (See below for the required format).
+3. **Ensure `hosts.txt`, `base_commands.txt`, and `commands.txt` files are present** in the same directory (See below for the required format).
 
 ## Usage
 
@@ -62,8 +63,18 @@ Example:
 10.0.0.5
 ```
 
+#### `base_commands.txt`
+The `base_commands.txt` file should contain a list of base commands that will be executed **first** on every switch. These are usually commands that set terminal behavior or gather specific information common to all switches.
+
+Example:
+```
+term len 0
+show run | include hostname
+show clock
+```
+
 #### `commands.txt`
-The `commands.txt` file should contain a list of commands that you want to execute on each switch. Each line should be a command as you would type it on the switch's command line.
+The `commands.txt` file should contain a list of commands that you want to execute after the base commands. Each line should be a command as you would type it on the switch's command line.
 
 Example:
 ```
@@ -82,9 +93,10 @@ show ip route
    ```
 
 2. The script will:
-   - Read from `hosts.txt` and `commands.txt`.
+   - Read from `hosts.txt`, `base_commands.txt`, and `commands.txt`.
+   - Combine the base commands from `base_commands.txt` with the custom commands from `commands.txt` (base commands will be executed first).
    - Connect to each host (network switch) via SSH.
-   - Execute the commands specified in `commands.txt` on each host.
+   - Execute the combined list of commands on each host.
    - Save the output in individual files named `{host}_output.txt`.
 
 ### Example Interaction
@@ -106,15 +118,13 @@ The output for each host will be saved in a file named `{host}_output.txt`. Each
 Output for host: 192.168.0.1
 ========================================
 ----------------------------------------
+Command: term len 0
+----------------------------------------
+<Command output here>
+----------------------------------------
 Command: show version
 ----------------------------------------
-Cisco IOS XE Software, Version 16.12.1
-...
-----------------------------------------
-Command: show interfaces
-----------------------------------------
-GigabitEthernet0/0 is up
-...
+<Command output here>
 ========================================
 End of output for host: 192.168.0.1
 ========================================
@@ -134,7 +144,7 @@ These log files include:
 ```text
 2024-10-23 10:00:00 - INFO - Connected to 192.168.0.1
 2024-10-23 10:00:05 - INFO - ======================================== Starting session for host: 192.168.0.1 ========================================
-2024-10-23 10:00:10 - INFO - ---------------------------------------- Executing command: show version ----------------------------------------
+2024-10-23 10:00:10 - INFO - ---------------------------------------- Executing command: term len 0 ----------------------------------------
 2024-10-23 10:00:12 - DEBUG - Command output (truncated): Cisco IOS XE Software, Version 16.12.1, RELEASE SOFTWARE (fc3)...
 2024-10-23 10:00:15 - INFO - ======================================== Finished session for host: 192.168.0.1 ========================================
 ```

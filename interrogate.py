@@ -63,7 +63,7 @@ def setup_logger(host):
 username = input("Please enter your username: ")
 password = getpass()
 
-# Read hosts and commands from files
+# Read hosts, base commands, and commands from files
 def read_hosts_from_file(filename):
     with open(filename, 'r') as f:
         hosts = f.read().splitlines()
@@ -127,8 +127,12 @@ def connect_and_execute_persistent(host, username, password, commands, logger):
 def run_on_host(host):
     output_file = f"{host}_output.txt"
     with open(output_file, "w") as file:
-        commands = read_commands_from_file(commands_file)
-
+        
+        # Read base commands first, then regular commands, and combine them
+        base_commands = read_commands_from_file(base_commands_file)
+        custom_commands = read_commands_from_file(commands_file)
+        commands = base_commands + custom_commands  # Combine the commands (base first)
+        
         # Set up a separate logger for each host
         logger = setup_logger(host)
         
@@ -150,6 +154,7 @@ def run_on_host(host):
 
 if __name__ == "__main__":
     hosts_file = "hosts.txt"
+    base_commands_file = 'base_commands.txt'  # Base commands file to read first
     commands_file = 'commands.txt'
 
     # Read hosts and commands
