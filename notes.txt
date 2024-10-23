@@ -1,0 +1,14 @@
+# network_switch_collector.py
+#
+# Author: John Doe
+# Contact: john.doe@example.com
+# Date: October 2024
+# Description: Script to gather command outputs from network switches using SSH.
+
+## Contact
+For questions or suggestions, feel free to open an issue or contact me via [GitHub](https://github.com/yourusername).
+
+
+MIT License
+Copyright (c) 2024 [Your Name] <[your.email@example.com]>
+
