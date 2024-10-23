@@ -1,8 +1,8 @@
 '''
 # interrogate.py
 #
-# Author:    Pete Link
-# Date: October 2024
+# Author:      Pete Link
+# Date:        October 2024
 # Description: Script to gather command outputs from network switches using SSH.
 
 ## Contact
@@ -77,7 +77,7 @@ def connect_and_execute_persistent(host, username, password, commands):
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect(host, username=username, password=password, timeout=10)
 
-        logging.info(f"Connected to {host}")
+        logging.info(f"Connected to: {host}")
         
         shell = ssh.invoke_shell()
         time.sleep(1)  # Allow some time to establish the session

@@ -1,7 +1,7 @@
 
 # Network Switch Output Collector
 
-This Python script automates gathering command outputs from network switches by connecting via SSH. It reads hosts (switch IPs or hostnames) and commands from external files (`hosts.txt` and `commands.txt`), and outputs the results for each host into a separate file, with clear visual separation between hosts and commands. The script also logs the entire session interactively for review.
+This Python script automates gathering command outputs from network switches by connecting via SSH. It reads hosts (switch IPs or hostnames) and commands from external files (`hosts.txt` and `commands.txt`), and outputs the results for each host into a separate file.  The script also logs the entire session interactively for review.
 
 ## Table of Contents
 1. [Features](#features)
@@ -38,12 +38,12 @@ pip install paramiko
 
 1. **Clone the repository** (or copy the script to your machine):
    ```bash
-   git clone https://github.com/your-repo/network-switch-output-collector.git
+   git clone https://github.com/Pete1001/interrogation-script.git
    ```
 
 2. **Navigate to the directory**:
    ```bash
-   cd network-switch-output-collector
+   cd interrogation-script
    ```
 
 3. **Ensure `hosts.txt` and `commands.txt` files are present** in the same directory (See below for the required format).
@@ -78,7 +78,7 @@ show ip route
 
    Example:
    ```bash
-   python3 network_switch_collector.py
+   python3 interrogate.py
    ```
 
 2. The script will:
@@ -90,7 +90,7 @@ show ip route
 ### Example Interaction
 
 ```bash
-$ python3 network_switch_collector.py
+$ python3 interrogate.py
 Please enter your username: admin
 Password: **********
 ```
